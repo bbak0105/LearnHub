@@ -5,3 +5,4 @@
 
 ## Lecture
 1. [클린코드 리액트](https://github.com/bbak0105/LearnHub/blob/main/CleanCode_React.md)
+2. [클린코드 자바스크립트](https://github.com/bbak0105/LearnHub/blob/main/CleanCode_js.md)
