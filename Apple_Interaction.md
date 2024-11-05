@@ -115,7 +115,58 @@
     let yOffset = 0; // 편의상 변수로 씀 (window.pageYOffset 대신에 쓸 변수)
 
     function scrollLoop() {
+      
+    }
+         
+    window.addEventListener('resize', setLayout)
+    window.addEventListener('scroll', () => {
+        yOffset = window.pageYOffset; // 현재 스크롤한 위치를 알 수 있음
+        scrollLoop();
+    })
 
+    setLayout();
+})();
+```
+
+<br/>
+
+## 2024-11-05 (화)
+
+### 섹션3-5
+
+궁금했던 부분 채우기! 씬을 전환하는 기준을 prevScrollHeight + sceneInfo[currentScene].scrollHeight로 설정하는 이유는, 현재 씬의 마지막 부분을 나타내기 위함입니다.
+
+```javaScript
+    function setLayout() {
+        // 각 스크롤 섹션의 높이 세팅
+        for (let i=0; i< sceneInfo.length; i++) {
+            // innerHeight는 핸드폰을 쓸것인가, 웹을 쓸것인가에 따라 다 다름
+            sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight;
+            // 결과 : 3990
+
+            sceneInfo[i].objs.container.style.height = `${sceneInfo[i].scrollHeight}px`
+        }
+    }
+
+    let yOffset = 0; // 편의상 변수로 씀 (window.pageYOffset 대신에 쓸 변수 = 현재 스크롤 위치)
+    let prevScrollHeight = 0; // 현재 스크롤 위치(yOffset)보다 이전에 위치한 스크롤 섹션들의 스크롤 높이의 합
+    let currentScene = 0; // 현재 활성화 된 (눈 앞에 보고 있는) 씬(scroll-section)
+
+    function scrollLoop() {
+        prevScrollHeight = 0;
+
+        for(let i=0; i < currentScene; i++) {
+            prevScrollHeight += sceneInfo[i].scrollHeight;
+        }
+
+        if(yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
+            currenScene++;
+        }
+
+        if(yOffset < prevScrollHeight) {
+            if (currentScene === 0) return // 브라우저 바운스 효과로 인해 마이너스가 되는 것을 방지
+            currenScene--;
+        }
     }
 
     window.addEventListener('resize', setLayout)
@@ -127,3 +178,35 @@
     setLayout();
 })();
 ```
+
+1. 미리 먼저 바뀌어버리는 이유 : 위에 메뉴바 높이 때문에
+   => 높이를 조정해주기
+
+2. 조정할 때 height같은거 조심하기
+
+```CSS
+
+ /* 위 메뉴 */
+.global-nav {
+    position: absolute;
+    top: 0
+    left: 0;
+    width: 100%
+    /* 원래는 여기까지 있었음 */
+    height: 44px;
+    padding: 0 1rem;
+}
+
+.local-nav {
+    position: absolute;
+    top: 45px; /* global-nav의 height 가 44px이니 같이 하면 겹쳐버림. 45px로 지정*/
+    left: 0;
+    width: 100%
+    /* 원래는 여기까지 있었음 */
+    height: 52px;
+    padding: 0 1rem;
+    border-botto: 1px solid #ddd;
+}
+
+```
+
