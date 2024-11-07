@@ -210,3 +210,131 @@
 
 ```
 
+<br/>
+
+## 2024-11-07 (목)
+
+### 섹션3-6 ~3-7
+
+```javaScript
+function setLayout() {
+    // 각 스크롤 섹션의 높이 세팅 (0~3)
+    for (let i=0; i< sceneInfo.length; i++) {
+        // innerHeight는 핸드폰을 쓸것인가, 웹을 쓸것인가에 따라 다 다름
+        sceneInfo[i].scrollHeight = sceneInfo[i].heightNum * window.innerHeight;
+        // 결과 : 3990
+        sceneInfo[i].objs.container.style.height = `${sceneInfo[i].scrollHeight}px`
+    }
+
+    // 새로고침 했을 때를 생각해서 넣어주는 곳
+    let totalScrollHeight = 0;
+
+    for(let i=0; i < sceneInfo.length; i++) {
+        totalScrollHeight += sceneInfo[i].scrollHeight; // 각 씬의 ScrollHeight를 넣고 있음
+
+        if(totalScrollHeight >= window.pageYOffSet) { // pageYOffSet 은 현재 위치를 알 수 있음
+            currentScene = i; // 2번과 3번에 걸쳐있는데 2번에 더 가깝게 되어있음 : 2번에 넣고 break
+            break;
+        }
+    }
+
+    document.body.setAttribute('id', `show-scene-${currentScene}`)
+}
+
+let yOffset = 0; // 편의상 변수로 씀 (window.pageYOffset 대신에 쓸 변수 = 현재 스크롤 위치)
+let prevScrollHeight = 0; // 현재 스크롤 위치(yOffset)보다 이전에 위치한 스크롤 섹션들의 스크롤 높이의 합
+let currentScene = 0; // 현재 활성화 된 (눈 앞에 보고 있는) 씬(scroll-section)
+
+function scrollLoop() {
+    prevScrollHeight = 0;
+
+    for(let i=0; i < currentScene; i++) {
+        prevScrollHeight += sceneInfo[i].scrollHeight;
+    }
+
+    if(yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
+        currenScene++;
+    }
+
+    if(yOffset < prevScrollHeight) {
+        if (currentScene === 0) return // 브라우저 바운스 효과로 인해 마이너스가 되는 것을 방지
+        currenScene--;
+    }
+
+    // document.body.setAttribute('id', `show-scene-${currentScene}`) // setLayout쪽에 새로고침 했을 때를 생각해서 넣어주는 코드 삽입해서 바뀔때만 설정해도 됨
+}
+
+window.addEventListener('scroll', () => {
+    yOffset = window.pageYOffset; // 현재 스크롤한 위치를 알 수 있음
+    scrollLoop();
+})
+
+// window.addEventListener('DOMContentLoaded', setLayout) // load 보다는 더 빠르다 (로드되기전시점)
+window.addEventListener('load', setLayout)
+window.addEventListener('resize', setLayout)
+
+```
+
+```javaScript
+const sceneInfo = [
+    //0
+    {
+        type: 'sticky',
+        heightNum: 5, // 브라우저 높이의 5배로 scrollHeight 세팅
+        scrollHeight: 0,
+        objs: {
+            container: document.querySelector('#scroll-section-0'),
+            messageA: document.querySelector('#scroll-section-0 .main-message.a'), // 온전히 빠져들게 하는 최고급 세라믹
+            messageB: document.querySelector('#scroll-section-0 .main-message.b'),
+            messageC: document.querySelector('#scroll-section-0 .main-message.c'),
+            messageD: document.querySelector('#scroll-section-0 .main-message.d'),
+        },
+        values: {
+            messageA_opacity: [0,1], // 시작 값, 끝 값
+
+        }
+    },
+    //1
+    {
+        type: 'normal', // 보통 스크롤이라 사용하지 않음
+        heightNum: 5,
+        scrollHeight: 0,
+        objs: {
+            container: document.querySelector('#scroll-section-1')
+        }
+    },
+    //2
+    {
+        type: 'sticky',
+        heightNum: 5,
+        scrollHeight: 0,
+        objs: {
+            container: document.querySelector('#scroll-section-2')
+        }
+    },
+    //3
+    {
+        type: 'sticky',
+        heightNum: 5,
+        scrollHeight: 0,
+        objs: {
+            container: document.querySelector('#scroll-section-3')
+        }
+    }
+];
+
+// 구간 별로 play될 애니메이션 나눠놓음 
+function playAnimation() {
+    switch(currentScene) {
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+    }
+}
+
+```
