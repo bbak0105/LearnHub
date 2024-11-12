@@ -338,3 +338,97 @@ function playAnimation() {
 }
 
 ```
+
+<br/>
+
+## 2024-11-12 (목)
+
+### 섹션3-8 ~ 3-9
+
+
+```javaScript
+const sceneInfo = [
+    //0
+    {
+        type: 'sticky',
+        heightNum: 5, // 브라우저 높이의 5배로 scrollHeight 세팅
+        scrollHeight: 0,
+        objs: {
+            container: document.querySelector('#scroll-section-0'),
+            messageA: document.querySelector('#scroll-section-0 .main-message.a'), // 온전히 빠져들게 하는 최고급 세라믹
+            messageB: document.querySelector('#scroll-section-0 .main-message.b'),
+            messageC: document.querySelector('#scroll-section-0 .main-message.c'),
+            messageD: document.querySelector('#scroll-section-0 .main-message.d'),
+        },
+        values: {
+            messageA_opacity: [0,1], // 시작 값, 끝 값
+
+        }
+    },
+    //1
+    {
+        type: 'normal', // 보통 스크롤이라 사용하지 않음
+        heightNum: 5,
+        scrollHeight: 0,
+        objs: {
+            container: document.querySelector('#scroll-section-1')
+        }
+    },
+    //2
+    {
+        type: 'sticky',
+        heightNum: 5,
+        scrollHeight: 0,
+        objs: {
+            container: document.querySelector('#scroll-section-2')
+        }
+    },
+    //3
+    {
+        type: 'sticky',
+        heightNum: 5,
+        scrollHeight: 0,
+        objs: {
+            container: document.querySelector('#scroll-section-3')
+        }
+    }
+];
+
+// 구간 별로 play될 애니메이션 나눠놓음
+function playAnimation() {
+    const objs = sceneInfo[currentScene].objs;
+    const values = sceneInfo[currentScene].values;
+    const currentYOffset = yOffset - prevScrollHeight // 현재 씬에서 얼마나 스크롤되었는지에 대한 여부
+
+    switch(currentScene) {
+        case 0:
+            // let messageA_opacity_0 = values.messageA_opacity[0] // opacity
+            // let messageA_opacity_1 = values.messageA_opacity[1]
+            let messageA_opacity_in = calcValues(values.messageA_opacity, currentOffset)
+            objs.messageA.style.opacity = messageA_opacity_in // 모두 스크롤안될때 초기값을 opacity 0으로주기
+
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+    }
+}
+
+function calcValues(values, currentYOffset) {
+    let rv;
+
+    // 현재 씬(스크롤섹션)에서 스크롤된 범위를 비율로 구하기
+    let scrollRatio = currentYOffset / sceneInfo[currentScene].scrollHeight
+
+    rv = scrollRatio * (values[1] - values[0]) + values[0]
+
+    return rv;
+}
+```
+
+- 키프레임이란? 애니메이션에서 변화가 있는 지점을 키프레임이라고 부른다.
+- screen ratio 에 따라 등장하고 없어지고 정해줘야한다~!
+
