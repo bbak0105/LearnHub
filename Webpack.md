@@ -10,11 +10,11 @@
 > ### 목차
 
 - [웹팩이란](#웹팩이란)
-- [Node.js](#Node.js)
+- [NodeJs](#NodeJs)
 - [NPM](#NPM)
 - [NPM 지역 설치](#NPM-지역-설치)
 - [NPM 전역 설치](#NPM-전역-설치)
-- [NPM 커스텀 명령어 (ex. npm run build)](#NPM-커스텀-명령어-(ex.-npm-run-build))
+- [NPM 커스텀 명령어)](#NPM-커스텀-명령어)
 
 <br/>
 
@@ -45,7 +45,7 @@
 
 <br/>
 
-### Node.js
+### NodeJs
 
 Node.js는 브라우저 밖에서도 자바스크립트를 실행할 수 있는 환경을 의미합니다.
 
@@ -166,7 +166,8 @@ npm install gulp --global
 
 <br/>
 
-### NPM 커스텀 명령어 (ex. npm run build)
+### NPM 커스텀 명령어 
+(ex. npm run build)
 
 NPM 커스텀 명령어란 사용자가 임의로 명령어의 이름과 동작을 정의해서 사용할 수 있는 기능을 의미합니다.
 
